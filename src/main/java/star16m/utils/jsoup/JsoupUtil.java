@@ -9,7 +9,6 @@ import org.jsoup.select.Elements;
 
 public class JsoupUtil {
 
-    
     public static Document getDocument(String urlString) throws IOException {
         return Jsoup.connect(urlString).get();
     }
