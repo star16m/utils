@@ -32,8 +32,10 @@ public class FileUtil {
         return fileFullName.substring(Math.max(windowIndex, unixIndex)+1);
     }
     public static String getFileExtension(File file) {
-        String fileName = file.getName();
-        return fileName.substring(fileName.lastIndexOf('.') + 1);
+        return getFileExtension(file.getName());
+    }
+    public static String getFileExtension(String fileName) {
+    	return fileName.substring(fileName.lastIndexOf('.') + 1);
     }
     public static File[] find(final File rootDirectory, final FileFilter fileFilter) throws Exception {
         List<File> fileList = new ArrayList<File>();
