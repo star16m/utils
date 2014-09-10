@@ -30,6 +30,11 @@ public class StringUtil {
         return string == null ? "" : string;
     }
     
+    public static void usage(String message) {
+        System.out.println("--------------------------------------------------");
+        System.out.println(message);
+        System.out.println("--------------------------------------------------");
+    } 
     public static String getReplaceLine(String line, Map<String, String> replaceMapInfo) {
         String replaceLine = null;
         if (line != null && line.trim().length() > 0 && replaceMapInfo != null && replaceMapInfo.size() > 0) {

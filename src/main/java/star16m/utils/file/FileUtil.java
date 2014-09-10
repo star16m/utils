@@ -16,6 +16,21 @@ import star16m.utils.string.StringUtil;
 
 public class FileUtil {
 
+    public static String getBaseName(String fileFullName) {
+        if (fileFullName == null) {
+            return null;
+        }
+        String fileName = getFileName(fileFullName);
+        return fileName.substring(0, fileName.lastIndexOf("."));
+    }
+    public static String getFileName(String fileFullName) {
+        if (fileFullName == null) {
+            return null;
+        }
+        int windowIndex = fileFullName.lastIndexOf("\\");
+        int unixIndex = fileFullName.lastIndexOf("/");
+        return fileFullName.substring(Math.max(windowIndex, unixIndex)+1);
+    }
     public static String getFileExtension(File file) {
         String fileName = file.getName();
         return fileName.substring(fileName.lastIndexOf('.') + 1);
