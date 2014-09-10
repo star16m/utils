@@ -55,13 +55,17 @@ public class StringUtil {
     }
     
     public static String[] join(String[] joinStringArraySource, String[] joinStringArrayTarget, String delimeter) {
-        List<String> stringList = new ArrayList<String>();
-        for (int i=0; i<joinStringArraySource.length; i++) {
-            stringList.add(joinStringArraySource[i] + delimeter + joinStringArrayTarget[i]);
-        }
-        return stringList.toArray(new String[0]);
+    	return join(joinStringArraySource, joinStringArrayTarget, delimeter, null);
     }
-    
+    public static String[] join(String[] joinStringArraySource, String[] joinStringArrayTarget, String prefix, String suffix) {
+    	List<String> stringList = new ArrayList<String>();
+    	prefix = getString(prefix);
+    	suffix = getString(suffix);
+    	for (int i=0; i<joinStringArraySource.length; i++) {
+    		stringList.add(joinStringArraySource[i] + prefix + joinStringArrayTarget[i] + suffix);
+    	}
+    	return stringList.toArray(new String[0]);
+    }
     public static String[] slice(String[] stringArray, int startIndex, int endIndex) {
         if (stringArray == null || stringArray.length <= 0) {
             throw new IllegalArgumentException();
