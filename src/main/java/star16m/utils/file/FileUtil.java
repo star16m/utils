@@ -59,6 +59,12 @@ public class FileUtil {
 			// do nothing.
 		}
 	}
+    public static boolean isNewer(File file, long timeMillis) {
+        if (!file.exists()) {
+            return false;
+        }
+        return file.lastModified() > timeMillis;
+    }
     public static String getBaseName(String fileFullName) {
         if (fileFullName == null) {
             return null;
