@@ -7,15 +7,59 @@ import java.io.FileFilter;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.RandomAccessFile;
+import java.io.Reader;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 
+import org.omg.CORBA_2_3.portable.OutputStream;
+
 import star16m.utils.string.StringUtil;
 
 public class FileUtil {
 
+	public static void closeQuietly(InputStream inputStream) {
+		try {
+			inputStream.close();
+		} catch (IOException e) {
+			// do nothing.
+		}
+	}
+	public static void closeQuietly(OutputStream outputStream) {
+		try {
+			outputStream.close();
+		} catch (IOException e) {
+			// do nothing.
+		}
+	}
+	
+	public static void closeQuietly(Reader reader) {
+		try {
+			reader.close();
+		} catch (IOException e) {
+			// do nothing.
+		}
+	}
+	
+	public static void closeQuietly(Writer writer) {
+		try {
+			writer.close();
+		} catch (IOException e) {
+			// do nothing.
+		}
+	}
+	
+	public static void closeQuietly(RandomAccessFile randomAccessFile) {
+		try {
+			randomAccessFile.close();
+		} catch (IOException e) {
+			// do nothing.
+		}
+	}
     public static String getBaseName(String fileFullName) {
         if (fileFullName == null) {
             return null;
