@@ -21,40 +21,95 @@ import star16m.utils.string.StringUtil;
 
 public class FileUtil {
 
+	public static String LINE_SEPARATOR = System.getProperty("line.separator");
 	public static void closeQuietly(InputStream inputStream) {
-		try {
-			inputStream.close();
-		} catch (IOException e) {
-			// do nothing.
+		if (inputStream != null) {
+			try {
+				inputStream.close();
+			} catch (IOException e) {
+				// do nothing.
+			}
 		}
 	}
 	public static void closeQuietly(OutputStream outputStream) {
-		try {
-			outputStream.close();
-		} catch (IOException e) {
-			// do nothing.
+		if (outputStream != null) {
+			try {
+				outputStream.close();
+			} catch (IOException e) {
+				// do nothing.
+			}
 		}
 	}
 	
 	public static void closeQuietly(Reader reader) {
-		try {
-			reader.close();
-		} catch (IOException e) {
-			// do nothing.
+		if (reader != null) {
+			try {
+				reader.close();
+			} catch (IOException e) {
+				// do nothing.
+			}
 		}
 	}
 	
 	public static void closeQuietly(Writer writer) {
-		try {
-			writer.close();
-		} catch (IOException e) {
-			// do nothing.
+		if (writer != null) {
+			try {
+				writer.close();
+			} catch (IOException e) {
+				// do nothing.
+			}
 		}
 	}
 	
 	public static void closeQuietly(RandomAccessFile randomAccessFile) {
+		if (randomAccessFile != null) {
+			try {
+				randomAccessFile.close();
+			} catch (IOException e) {
+				// do nothing.
+			}
+		}
+	}
+	
+	public static BufferedReader getReader(File file) {
+		BufferedReader reader = null;
 		try {
-			randomAccessFile.close();
+			reader = new BufferedReader(new FileReader(file));
+		} catch (IOException e) {
+			// do nothing.
+		}
+		return reader;
+	}
+	public static BufferedWriter getWriter(File file) {
+		BufferedWriter writer = null;
+		try {
+			writer = new BufferedWriter(new FileWriter(file));
+		} catch (IOException e) {
+			// do nothing.
+		}
+		return writer;
+	}
+	public static String readLine(BufferedReader reader) {
+		String readLine = null;
+		try {
+			readLine = reader.readLine();
+		} catch (IOException e) {
+			// do nothing.
+		}
+		return readLine;
+	}
+	public static void read(File file, SimpleTextHandler handler) {
+		BufferedReader reader = getReader(file);
+		String line = null;
+		while ((line = readLine(reader))!=null) {
+			handler.handle(line);
+		}
+		closeQuietly(reader);
+	}
+	public static void writeLine(BufferedWriter writer, String appendMessage) {
+		try {
+			writer.write(appendMessage);
+			writer.newLine();
 		} catch (IOException e) {
 			// do nothing.
 		}
