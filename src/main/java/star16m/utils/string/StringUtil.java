@@ -6,6 +6,8 @@ import java.util.Map;
 
 public class StringUtil {
 
+	public static final String STRING_NEW_LINE = System.getProperty("line.separator");
+	public static final String STRING_TAB = "\t";
     public static void prints(String[] stringArray) {
         if (stringArray != null && stringArray.length > 0) {
             int indexSize = String.valueOf(stringArray.length).length();
