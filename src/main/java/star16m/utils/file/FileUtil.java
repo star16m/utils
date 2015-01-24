@@ -13,6 +13,7 @@ import java.io.RandomAccessFile;
 import java.io.Reader;
 import java.io.Writer;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -21,7 +22,6 @@ import star16m.utils.string.StringUtil;
 
 public class FileUtil {
 
-	public static String LINE_SEPARATOR = System.getProperty("line.separator");
 	public static void closeQuietly(InputStream inputStream) {
 		if (inputStream != null) {
 			try {
@@ -141,6 +141,9 @@ public class FileUtil {
     public static String getFileExtension(String fileName) {
     	return fileName.substring(fileName.lastIndexOf('.') + 1);
     }
+    public static File[] find(final String rootDirectoryString, final FileFilter fileFilter) throws Exception {
+    	return find(new File(rootDirectoryString), fileFilter);
+    }
     public static File[] find(final File rootDirectory, final FileFilter fileFilter) throws Exception {
         List<File> fileList = new ArrayList<File>();
         walk(rootDirectory, fileList, fileFilter);
@@ -168,6 +171,37 @@ public class FileUtil {
             }
         };
     }
+    public static FileFilter getFileFilterThanNewer(final Date defaultDate) {
+        return new FileFilter() {
+            public boolean accept(File file) {
+            	return file.lastModified() > defaultDate.getTime();
+            }
+        };
+    }
+    public static FileFilter getFileFilterThanOlder(final Date defaultDate) {
+        return new FileFilter() {
+            public boolean accept(File file) {
+            	return file.lastModified() < defaultDate.getTime();
+            }
+        };
+    }
+    public static FileFilter getFileFilgter(final boolean isFile, final String extension, final Matcher fileNameMatcher, final Date defaultDate, final boolean olderThan) {
+        return new FileFilter() {
+            public boolean accept(File file) {
+            	if (fileNameMatcher != null) {
+            		fileNameMatcher.reset(file.getName());
+            	}
+            	return (file.isFile() && isFile || (file.isDirectory() && !isFile))
+            		&& (extension == null || (extension != null && (file.getName().toLowerCase().endsWith(extension.toLowerCase()))))
+            		&& (fileNameMatcher == null || (fileNameMatcher != null && fileNameMatcher.find()))
+            		&& (defaultDate == null || (defaultDate != null && (olderThan ? file.lastModified() < defaultDate.getTime() : file.lastModified() > defaultDate.getTime())))
+            		;
+            }
+        };
+    }
+    
+    
+    
     public static String[] getFileAbsolutePath(final File[] fileList) {
         List<String> fileAbsolutePathList = new ArrayList<String>();
         if (fileList != null && fileList.length > 0) {
