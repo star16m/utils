@@ -185,13 +185,13 @@ public class FileUtil {
             }
         };
     }
-    public static FileFilter getFileFilgter(final boolean isFile, final String extension, final Matcher fileNameMatcher, final Date defaultDate, final boolean olderThan) {
+    public static FileFilter getFileFilter(final Boolean isFile, final String extension, final Matcher fileNameMatcher, final Date defaultDate, final boolean olderThan) {
         return new FileFilter() {
             public boolean accept(File file) {
             	if (fileNameMatcher != null) {
             		fileNameMatcher.reset(file.getName());
             	}
-            	return (file.isFile() && isFile || (file.isDirectory() && !isFile))
+            	return (isFile == null || (isFile != null && (file.isFile() && isFile || (file.isDirectory() && !isFile))))
             		&& (extension == null || (extension != null && (file.getName().toLowerCase().endsWith(extension.toLowerCase()))))
             		&& (fileNameMatcher == null || (fileNameMatcher != null && fileNameMatcher.find()))
             		&& (defaultDate == null || (defaultDate != null && (olderThan ? file.lastModified() < defaultDate.getTime() : file.lastModified() > defaultDate.getTime())))
