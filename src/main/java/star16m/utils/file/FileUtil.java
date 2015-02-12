@@ -12,6 +12,7 @@ import java.io.OutputStream;
 import java.io.RandomAccessFile;
 import java.io.Reader;
 import java.io.Writer;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -22,6 +23,29 @@ import star16m.utils.string.StringUtil;
 
 public class FileUtil {
 
+	public static String getFileSize(File file) {
+		double bytes = file.length();
+		int index=0;
+		while(bytes > 1024 && index < 5) {
+			bytes = bytes / 1024;
+			index++;
+		}
+		DecimalFormat df = new DecimalFormat("#,##0.00");
+		StringBuffer sizeString = new StringBuffer(df.format(bytes));
+		switch(index) {
+		case 0:
+			return sizeString.append(" Bytes").toString();
+		case 1:
+			return sizeString.append(" KB").toString();
+		case 2:
+			return sizeString.append(" MB").toString();
+		case 3:
+			return sizeString.append(" GB").toString();
+		case 4:
+			return sizeString.append(" TB").toString();
+		}
+		return sizeString.toString();
+	}
 	public static void closeQuietly(InputStream inputStream) {
 		if (inputStream != null) {
 			try {
@@ -189,9 +213,9 @@ public class FileUtil {
         return new FileFilter() {
             public boolean accept(File file) {
             	if (fileNameMatcher != null) {
-            		fileNameMatcher.reset(file.getName());
+            		fileNameMatcher.reset(file.getAbsolutePath());
             	}
-            	return (isFile == null || (isFile != null && (file.isFile() && isFile || (file.isDirectory() && !isFile))))
+            	return (isFile == null || (isFile != null && ((file.isFile() && isFile) || (file.isDirectory() && !isFile))))
             		&& (extension == null || (extension != null && (file.getName().toLowerCase().endsWith(extension.toLowerCase()))))
             		&& (fileNameMatcher == null || (fileNameMatcher != null && fileNameMatcher.find()))
             		&& (defaultDate == null || (defaultDate != null && (olderThan ? file.lastModified() < defaultDate.getTime() : file.lastModified() > defaultDate.getTime())))
